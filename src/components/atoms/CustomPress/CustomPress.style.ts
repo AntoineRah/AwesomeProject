@@ -7,7 +7,7 @@ const pressableStyle = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 14,
     paddingHorizontal: 24,
-    height:60,
+    height: 60,
   },
   text: {
     color: 'white',
