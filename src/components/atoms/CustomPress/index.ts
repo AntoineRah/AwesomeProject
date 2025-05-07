@@ -1,0 +1,1 @@
+export {CustomPress} from './CustomPress';

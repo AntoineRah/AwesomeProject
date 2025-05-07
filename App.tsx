@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
+import { SignupForm } from './src/components/organisms/SignupForm';
 
 const App = () => {
   return (
-    <View >
-      <Text> YA 3AMME KHALASSSSSSSSSSSSSSSSSS</Text>
+    <View>
+      <SignupForm />
     </View>
   );
 };
