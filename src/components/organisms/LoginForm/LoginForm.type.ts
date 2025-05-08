@@ -9,7 +9,7 @@ type LoginScreenNavigationProp = NativeStackNavigationProp<
 
 const schema = z.object({
   email: z.string().email('Email is invalid'),
-  password: z.string().min(7, 'Password does not match correct credentials '),
+  password: z.string().min(7),
 });
 
 type LogInFormData = z.infer<typeof schema>;
