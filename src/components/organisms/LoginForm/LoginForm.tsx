@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, Pressable} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -8,18 +8,15 @@ import {Error} from '../../atoms/Error';
 import {CustomPress} from '../../atoms/CustomPress/CustomPress';
 import {styles} from './LoginForm.style';
 import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import type {RootStackParamList} from '../../../screens/type';
+import {LoginScreenNavigationProp} from './LoginForm.type';
 
-type LoginScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Login'
->;
 const LoginForm = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
+  const [error, setError] = useState<string | undefined>();
   const {
     control,
     handleSubmit,
+    reset,
     formState: {errors},
   } = useForm<LogInFormData>({
     resolver: zodResolver(schema),
@@ -30,7 +27,13 @@ const LoginForm = () => {
   });
 
   const onSubmit = (data: LogInFormData) => {
-    console.log('Logging in with:', data);
+    if (data.email === 'academy@gmail.com' && data.password === 'academy2025') {
+      navigation.navigate('OTP');
+      reset();
+      setError(undefined);
+    } else {
+      setError('invalid credentials');
+    }
   };
 
   return (
@@ -71,7 +74,7 @@ const LoginForm = () => {
           </View>
         )}
       />
-
+      {error && <Error message={error} />}
       <View>
         <CustomPress onPress={handleSubmit(onSubmit)} text="Log In" />
       </View>

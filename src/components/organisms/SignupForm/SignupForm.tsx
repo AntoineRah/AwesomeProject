@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {CustomPress} from '../../atoms/CustomPress/CustomPress';
@@ -28,8 +28,8 @@ const SignupForm = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
+    <KeyboardAvoidingView style={styles.container}>
+      <ScrollView style={styles.form}>
         <Text style={styles.title}>Create Account</Text>
 
         <Controller
@@ -97,11 +97,12 @@ const SignupForm = () => {
             </>
           )}
         />
+
         <View>
           <CustomPress onPress={handleSubmit(onSubmit)} text="Sign Up" />
         </View>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
