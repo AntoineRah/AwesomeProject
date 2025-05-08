@@ -13,6 +13,8 @@ import {LoginScreenNavigationProp} from './LoginForm.type';
 const LoginForm = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const [error, setError] = useState<string | undefined>();
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -68,13 +70,21 @@ const LoginForm = () => {
               onChangeText={onChange}
               onBlur={onBlur}
               value={value}
-              secureTextEntry
+              secureTextEntry={!showPassword}
             />
+            <Pressable onPress={() => setShowPassword(prev => !prev)}>
+              <View>
+                <Text style={styles.showpassword}>
+                  {showPassword ? 'Hide Password' : 'Show Password'}
+                </Text>
+              </View>
+            </Pressable>
             {errors.password && <Error message={errors.password.message} />}
           </View>
         )}
       />
       {error && <Error message={error} />}
+
       <View>
         <CustomPress onPress={handleSubmit(onSubmit)} text="Log In" />
       </View>

@@ -22,5 +22,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#3251D0',
   },
+  showpassword: {
+    color: '#3251D0',
+    marginBottom: 10,
+  },
 });
 export {styles};
