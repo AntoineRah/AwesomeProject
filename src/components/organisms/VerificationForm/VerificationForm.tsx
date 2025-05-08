@@ -7,8 +7,10 @@ import {useForm, Controller} from 'react-hook-form';
 import {styles} from './VerificationForm.style';
 import {Error} from '../../atoms/Error';
 import {CustomPress} from '../../atoms/CustomPress';
+import {useAuth} from '../../../hooks/authentication';
 
 const VerificationForm = () => {
+  const {login} = useAuth();
   const {
     control,
     handleSubmit,
@@ -19,7 +21,7 @@ const VerificationForm = () => {
   });
   const onSubmit = (data: VerificationFormData) => {
     if (data.otp === '1234') {
-      Alert.alert('Success', 'OTP Verified');
+      login();
     } else {
       Alert.alert('Error', 'Incorrect OTP');
     }
