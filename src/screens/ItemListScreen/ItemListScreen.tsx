@@ -1,12 +1,14 @@
-import {View, Text} from 'react-native';
 import React from 'react';
+import {View} from 'react-native';
+import ItemList from '../../components/organisms/ItemList/ItemList';
+import { styles } from './ItemListScreen.style';
 
 const ItemListScreen = () => {
   return (
-    <View>
-      <Text>ItemlistScreen</Text>
+    <View style={styles.container} >
+      <ItemList />
     </View>
   );
 };
 
-export  {ItemListScreen};
+export {ItemListScreen};
