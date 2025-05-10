@@ -1,4 +1,4 @@
 export type MainStackParamList = {
   ItemList: undefined;
-  Details: undefined;
+  Details: {id: string};
 };
