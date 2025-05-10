@@ -4,12 +4,14 @@ import {DetailsScreenProp} from './DetailsScreen.type';
 import {useRoute} from '@react-navigation/native';
 import {data} from '../../assets/Products.json';
 import {Error} from '../../components/atoms/Error';
-import {styles} from './DetailsScreen.style';
-
+import {getstyles} from './DetailsScreen.style';
+import {useTheme} from '../../hooks/theme';
 
 const DetailsScreen = () => {
   const {params} = useRoute<DetailsScreenProp>();
   const product = data.find(item => item._id === params.id);
+  const {colors} = useTheme();
+  const styles = getstyles(colors);
 
   return product ? (
     <ScrollView contentContainerStyle={styles.container}>

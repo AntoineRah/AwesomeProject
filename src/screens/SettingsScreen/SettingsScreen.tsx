@@ -1,12 +1,8 @@
-import {View, Text} from 'react-native';
 import React from 'react';
+import {SettingsForm} from '../../components/organisms/SettingsForm';
 
 const SettingsScreen = () => {
-  return (
-    <View>
-      <Text>SettingsScreen</Text>
-    </View>
-  );
+  return <SettingsForm />;
 };
 
 export {SettingsScreen};

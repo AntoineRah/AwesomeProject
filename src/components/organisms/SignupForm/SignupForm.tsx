@@ -4,9 +4,10 @@ import {useForm, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {CustomPress} from '../../atoms/CustomPress/CustomPress';
 import {SignupFormData, schema} from './SignupForm.type';
-import {styles} from './SignupForm.style';
+import {getstyles} from './SignupForm.style';
 import {CustomTextInput} from '../../atoms/CustomTextInput';
 import {Error} from '../../atoms/Error';
+import {useTheme} from '../../../hooks/theme';
 
 const SignupForm = () => {
   const {
@@ -27,6 +28,8 @@ const SignupForm = () => {
     console.log('Form submitted:', data);
   };
 
+  const {colors} = useTheme();
+  const styles = getstyles(colors);
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView style={styles.form}>

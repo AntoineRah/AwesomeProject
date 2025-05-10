@@ -4,13 +4,17 @@ import {VerificationFormData} from './VerificationForm.type';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {schema} from './VerificationForm.type';
 import {useForm, Controller} from 'react-hook-form';
-import {styles} from './VerificationForm.style';
+import {getstyles} from './VerificationForm.style';
 import {Error} from '../../atoms/Error';
 import {CustomPress} from '../../atoms/CustomPress';
 import {useAuth} from '../../../hooks/authentication';
+import {useTheme} from '../../../hooks/theme';
 
 const VerificationForm = () => {
   const {login} = useAuth();
+  const {colors} = useTheme();
+  const styles = getstyles(colors);
+
   const {
     control,
     handleSubmit,
