@@ -3,6 +3,7 @@ import {View, Text, Image, TouchableOpacity, Pressable} from 'react-native';
 import {getstyles} from './SettingsForm.style';
 import {useAuth} from '../../../hooks/authentication';
 import {useTheme} from '../../../hooks/theme';
+import { fonts } from '../../../globalSyles/fontTheme';
 
 const SettingsForm = () => {
   const {logout} = useAuth();
@@ -17,14 +18,14 @@ const SettingsForm = () => {
           source={{uri: 'https://via.placeholder.com/150'}}
           style={styles.avatar}
         />
-        <Text style={styles.username}>Eurisko</Text>
+        <Text style={[styles.username,fonts.heading]}>Eurisko</Text>
         <Pressable onPress={toggle}>
-          <Text style={styles.toggleThemeText}>Toggle Theme</Text>
+          <Text style={[styles.toggleThemeText,fonts.regular]}>Toggle Theme</Text>
         </Pressable>
       </View>
 
       <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-        <Text style={styles.logoutText}>Log Out</Text>
+        <Text style={[styles.logoutText,fonts.regular]}>Log Out</Text>
       </TouchableOpacity>
     </View>
   );

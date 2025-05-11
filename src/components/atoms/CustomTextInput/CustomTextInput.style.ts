@@ -1,4 +1,5 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
+import { scale } from '../../../utils/scale';
 
 const getCustomTextInput = (colors: {
   firstcolor: string;
@@ -11,14 +12,15 @@ const getCustomTextInput = (colors: {
     input: {
       borderWidth: 1,
       borderColor: '#ccc',
-      borderRadius: 8,
-      paddingHorizontal: 12,
-      paddingVertical: 10,
-      marginBottom: 16,
-      fontSize: 16,
-      backgroundColor: colors.background,
-      height: 60,
+      borderRadius: scale(8),
+      paddingHorizontal: scale(12),
+      paddingVertical: scale(10),
+      marginBottom: scale(16),
+      fontSize: scale(16),
+      backgroundColor: colors.firstcolor,
+      height: scale(60),
+      color:colors.textcolor,
     },
   });
 
-export {getCustomTextInput};
+export { getCustomTextInput };

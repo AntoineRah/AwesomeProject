@@ -1,20 +1,29 @@
 import React, {useState} from 'react';
-import {View, Text, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {LogInFormData, schema} from './LoginForm.type';
 import {CustomTextInput} from '../../atoms/CustomTextInput';
 import {Error} from '../../atoms/Error';
 import {CustomPress} from '../../atoms/CustomPress/CustomPress';
-import {styles} from './LoginForm.style';
+import {getstyles} from './LoginForm.style';
 import {useNavigation} from '@react-navigation/native';
 import {LoginScreenNavigationProp} from './LoginForm.type';
+import {fonts} from '../../../globalSyles/fontTheme';
+import {useTheme} from '../../../hooks/theme';
 
 const LoginForm = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const [error, setError] = useState<string | undefined>();
   const [showPassword, setShowPassword] = useState(false);
-
+  const {colors} = useTheme();
+  const styles = getstyles(colors);
   const {
     control,
     handleSubmit,
@@ -39,8 +48,10 @@ const LoginForm = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Log In</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <Text style={[styles.title, fonts.heading]}>Log In</Text>
 
       <Controller
         control={control}
@@ -74,7 +85,7 @@ const LoginForm = () => {
             />
             <Pressable onPress={() => setShowPassword(prev => !prev)}>
               <View>
-                <Text style={styles.showpassword}>
+                <Text style={[styles.showpassword, fonts.small]}>
                   {showPassword ? 'Hide Password' : 'Show Password'}
                 </Text>
               </View>
@@ -88,9 +99,11 @@ const LoginForm = () => {
       <CustomPress onPress={handleSubmit(onSubmit)} text="Log In" />
 
       <Pressable onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.link}>Don't have an account? Sign Up</Text>
+        <Text style={[styles.link, fonts.small]}>
+          Don't have an account? Sign Up
+        </Text>
       </Pressable>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

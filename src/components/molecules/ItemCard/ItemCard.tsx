@@ -7,6 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MainStackParamList} from '../../../navigation/main/MainStack.type';
 import {useTheme} from '../../../hooks/theme';
+import { fonts } from '../../../globalSyles/fontTheme';
 
 const ItemCard = ({id, title, price, imageUrl}: ItemCardProps) => {
   const navigation =
@@ -19,8 +20,8 @@ const ItemCard = ({id, title, price, imageUrl}: ItemCardProps) => {
       onPress={() => navigation.navigate('Details', {id: id})}>
       <Image style={styles.imagestyle} source={{uri: imageUrl}} />
       <View style={styles.textcontainer}>
-        <Text style={styles.fontstyle}>{title}</Text>
-        <Text style={styles.pricestyle}>Price: {price}$</Text>
+        <Text style={[styles.fontstyle,fonts.heading]}>{title}</Text>
+        <Text style={[styles.pricestyle,fonts.small]}>Price: {price}$</Text>
       </View>
     </Pressable>
   );

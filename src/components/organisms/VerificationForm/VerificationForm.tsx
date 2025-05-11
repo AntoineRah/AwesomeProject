@@ -44,7 +44,6 @@ const VerificationForm = () => {
               style={styles.input}
               keyboardType="number-pad"
               maxLength={4}
-              placeholder="1234"
               onChangeText={onChange}
               value={value}
             />

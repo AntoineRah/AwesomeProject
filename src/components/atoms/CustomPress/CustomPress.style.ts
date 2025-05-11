@@ -35,7 +35,7 @@ const getPressedStyle = (
   },
 ) => [
   {
-    backgroundColor: pressed ? '#210F37' : '#4F1C51',
+    backgroundColor: pressed ? '#096B68' : '#90C67C',
   },
   getPressableStyle(colors).button,
 ];

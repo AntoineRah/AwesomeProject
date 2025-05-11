@@ -7,11 +7,11 @@ const ThemeProvider = ({children}: {children: ReactNode}) => {
   const [isDark, setIsDark] = useState(false);
   const toggle = () => setIsDark(prev => !prev);
   const colors = {
-    firstcolor: isDark ? '#393E46' : '328E6E',
-    secondcolor: isDark ? '#393E46' : '67AE6E',
-    thirdcolor: isDark ? '#948979' : '90C67C',
-    textcolor: isDark ? '#DFD0B8' : 'E1EEBC',
-    background: isDark ? '2C2C2C' : '328E6E',
+    firstcolor: isDark ? '#948979' : '#328E6E',
+    secondcolor: isDark ? '#393E46' : '#129990',
+    thirdcolor: isDark ? '#393E46' : '#90D1CA',
+    textcolor: isDark ? '#DFD0B8' : '#E1EEBC',
+    background: isDark ? '#2C2C2C' : '#096B68',
   };
   return (
     <ThemeContext.Provider value={{isDark, toggle, colors}}>

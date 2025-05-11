@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {scale} from '../../../utils/scale';
 
 const getstyles = (colors: {
   firstcolor: string;
@@ -12,40 +13,40 @@ const getstyles = (colors: {
       flex: 1,
       backgroundColor: colors.background,
       justifyContent: 'space-between',
-      paddingVertical: 60,
-      paddingHorizontal: 24,
+      paddingVertical: scale(60),
+      paddingHorizontal: scale(24),
     },
     profileSection: {
       alignItems: 'center',
-      marginTop: 60,
+      marginTop: scale(60),
     },
     avatar: {
-      width: 120,
-      height: 120,
-      borderRadius: 60,
-      marginBottom: 20,
-      backgroundColor: 'gray',
+      width: scale(120),
+      height: scale(120),
+      borderRadius: scale(60),
+      marginBottom: scale(20),
+      backgroundColor: colors.secondcolor,
     },
     username: {
-      fontSize: 24,
+      fontSize: scale(24),
       fontWeight: 'bold',
-      color: '#333',
+      color: colors.textcolor,
     },
     logoutButton: {
       backgroundColor: '#210F37',
-      paddingVertical: 14,
-      borderRadius: 12,
+      paddingVertical: scale(14),
+      borderRadius: scale(12),
       alignItems: 'center',
     },
     logoutText: {
       color: colors.textcolor,
-      fontSize: 16,
+      fontSize: scale(16),
       fontWeight: '600',
     },
     toggleThemeText: {
-      marginTop: 12,
-      color: '#3251D0',
-      fontSize: 16,
+      marginTop: scale(12),
+      color: colors.firstcolor,
+      fontSize: scale(16),
       fontWeight: '600',
     },
   });

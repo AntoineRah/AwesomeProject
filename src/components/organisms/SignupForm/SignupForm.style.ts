@@ -1,4 +1,6 @@
 import {StyleSheet} from 'react-native';
+import {scale} from '../../../utils/scale';
+
 const getstyles = (colors: {
   firstcolor: string;
   secondcolor: string;
@@ -11,20 +13,19 @@ const getstyles = (colors: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      paddingHorizontal: scale(30),
       backgroundColor: colors.background,
-      paddingHorizontal: 30,
     },
     form: {
       width: '100%',
-      maxWidth: 400,
+      maxWidth: scale(400),
     },
     title: {
-      fontSize: 24,
-      marginBottom: 28,
+      fontSize: scale(24),
+      marginBottom: scale(28),
       fontWeight: 'bold',
       textAlign: 'center',
-      height: 30,
-      marginTop: 80,
+      marginTop: scale(80),
     },
   });
 

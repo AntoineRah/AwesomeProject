@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
+import {View, Text, KeyboardAvoidingView, Platform} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {CustomPress} from '../../atoms/CustomPress/CustomPress';
@@ -8,6 +8,7 @@ import {getstyles} from './SignupForm.style';
 import {CustomTextInput} from '../../atoms/CustomTextInput';
 import {Error} from '../../atoms/Error';
 import {useTheme} from '../../../hooks/theme';
+import {fonts} from '../../../globalSyles/fontTheme';
 
 const SignupForm = () => {
   const {
@@ -31,9 +32,11 @@ const SignupForm = () => {
   const {colors} = useTheme();
   const styles = getstyles(colors);
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <ScrollView style={styles.form}>
-        <Text style={styles.title}>Create Account</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <View style={styles.form}>
+        <Text style={[styles.title, fonts.heading]}>Create Account</Text>
 
         <Controller
           control={control}
@@ -104,7 +107,7 @@ const SignupForm = () => {
         <View>
           <CustomPress onPress={handleSubmit(onSubmit)} text="Sign Up" />
         </View>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };

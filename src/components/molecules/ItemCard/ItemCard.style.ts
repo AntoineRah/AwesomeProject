@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {scale} from '../../../utils/scale';
 
 const getstyles = (colors: {
   firstcolor: string;
@@ -10,29 +11,31 @@ const getstyles = (colors: {
   StyleSheet.create({
     container: {
       flexDirection: 'row',
-      borderRadius: 30,
+      borderRadius: scale(30),
       backgroundColor: colors.thirdcolor,
-      padding: 5,
-      gap: 50,
-      borderWidth: 2,
+      padding: scale(5),
+      gap: scale(50),
+      borderWidth: scale(2),
       borderColor: colors.secondcolor,
     },
     imagestyle: {
-      width: 100,
-      height: 100,
-      borderRadius: 30,
+      width: scale(100),
+      height: scale(100),
+      borderRadius: scale(30),
     },
     fontstyle: {
-      fontSize: 16,
+      fontSize: scale(16),
       fontWeight: 'bold',
+      color: colors.textcolor,
     },
     pricestyle: {
-      fontSize: 14,
-      color: 'gray',
+      fontSize: scale(14),
+      color: colors.textcolor,
     },
     textcontainer: {
       justifyContent: 'center',
       alignSelf: 'center',
     },
   });
+
 export {getstyles};

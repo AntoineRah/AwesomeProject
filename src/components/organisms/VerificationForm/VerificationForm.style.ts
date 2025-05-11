@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {scale} from '../../../utils/scale';
 
 const getstyles = (colors: {
   firstcolor: string;
@@ -11,19 +12,25 @@ const getstyles = (colors: {
     container: {
       flex: 1,
       justifyContent: 'center',
-      padding: 24,
+      padding: scale(24),
       backgroundColor: colors.background,
     },
-    title: {fontSize: 20, textAlign: 'center', marginBottom: 16},
+    title: {
+      fontSize: scale(20),
+      textAlign: 'center',
+      marginBottom: scale(16),
+      color:colors.textcolor,
+    },
     input: {
       borderWidth: 1,
       borderColor: colors.secondcolor,
-      borderRadius: 8,
-      paddingHorizontal: 16,
-      paddingVertical: 12,
-      fontSize: 18,
+      borderRadius: scale(8),
+      paddingHorizontal: scale(16),
+      paddingVertical: scale(12),
+      fontSize: scale(18),
       textAlign: 'center',
-      marginBottom: 12,
+      marginBottom: scale(12),
+      color:colors.textcolor,
     },
   });
 
