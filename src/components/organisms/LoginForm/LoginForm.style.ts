@@ -2,8 +2,8 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    flex: 1,
     justifyContent: 'center',
+    height:'100%',
   },
   title: {
     fontSize: 24,

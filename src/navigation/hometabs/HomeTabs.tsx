@@ -4,8 +4,9 @@ import {MainStack} from '../main';
 import {SettingsScreen} from '../../screens/SettingsScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ColorValue} from 'react-native';
+import {HomeTabParamList} from './HomeTabs.type';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<HomeTabParamList>();
 
 const showTabIcon = (name: string, color: ColorValue, size: number) => {
   <Icon name={name} color={color} size={size} />;
@@ -15,7 +16,7 @@ const HomeTabs = () => {
   return (
     <Tab.Navigator screenOptions={{headerShown: false}}>
       <Tab.Screen
-        name="Home"
+        name="Main"
         component={MainStack}
         options={{
           tabBarIcon: ({color, size}) =>
@@ -35,3 +36,4 @@ const HomeTabs = () => {
 };
 
 export {HomeTabs};
+

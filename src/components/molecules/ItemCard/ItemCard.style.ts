@@ -11,7 +11,7 @@ const getstyles = (colors: {
     container: {
       flexDirection: 'row',
       borderRadius: 30,
-      backgroundColor: colors.secondcolor,
+      backgroundColor: colors.thirdcolor,
       padding: 5,
       gap: 50,
       borderWidth: 2,

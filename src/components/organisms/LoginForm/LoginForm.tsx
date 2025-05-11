@@ -85,9 +85,7 @@ const LoginForm = () => {
       />
       {error && <Error message={error} />}
 
-      <View>
-        <CustomPress onPress={handleSubmit(onSubmit)} text="Log In" />
-      </View>
+      <CustomPress onPress={handleSubmit(onSubmit)} text="Log In" />
 
       <Pressable onPress={() => navigation.navigate('Signup')}>
         <Text style={styles.link}>Don't have an account? Sign Up</Text>
