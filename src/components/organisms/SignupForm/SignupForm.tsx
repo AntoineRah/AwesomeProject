@@ -1,36 +1,62 @@
 import React from 'react';
-import {View, Text, KeyboardAvoidingView, Platform} from 'react-native';
+import {View, Text, KeyboardAvoidingView, Platform, Alert} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {CustomPress} from '../../atoms/CustomPress/CustomPress';
-import {SignupFormData, schema} from './SignupForm.type';
+import {
+  SignupFormData,
+  SignupScreenNavigationProp,
+  schema,
+} from './SignupForm.type';
 import {getstyles} from './SignupForm.style';
 import {CustomTextInput} from '../../atoms/CustomTextInput';
 import {Error} from '../../atoms/Error';
 import {useTheme} from '../../../hooks/theme';
 import {fonts} from '../../../globalSyles/fontTheme';
+import {useMutation} from '@tanstack/react-query';
+import {signup} from '../../../api/auth';
+import {useNavigation} from '@react-navigation/native';
 
 const SignupForm = () => {
+  const {colors} = useTheme();
+  const {navigate} = useNavigation<SignupScreenNavigationProp>();
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: {errors, isValid},
   } = useForm<SignupFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
-      phonenumber: '',
+      profileImage: undefined,
+    },
+  });
+
+  console.log(`is it valid? ${isValid}`);
+
+  const {mutate, isPending} = useMutation({
+    mutationFn: (data: SignupFormData) => {
+      const response = signup(data);
+      console.log(response);
+      return response;
+    },
+    onSuccess: (_, variables) => {
+      navigate('OTP',{email:variables.email});
+    },
+    onError: (error: any) => {
+      Alert.alert('Error', error?.message || 'Something went wrong');
     },
   });
 
   const onSubmit = (data: SignupFormData) => {
-    console.log('Form submitted:', data);
+    mutate(data);
   };
 
-  const {colors} = useTheme();
   const styles = getstyles(colors);
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -40,15 +66,30 @@ const SignupForm = () => {
 
         <Controller
           control={control}
-          name="name"
+          name="firstName"
           render={({field: {onChange, value}}) => (
             <>
               <CustomTextInput
-                placeholder="Name"
+                placeholder="First Name"
                 onChangeText={onChange}
                 value={value}
               />
-              {errors.name && <Error message={errors.name.message} />}
+              {errors.firstName && <Error message={errors.firstName.message} />}
+            </>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="lastName"
+          render={({field: {onChange, value}}) => (
+            <>
+              <CustomTextInput
+                placeholder="Last Name"
+                onChangeText={onChange}
+                value={value}
+              />
+              {errors.lastName && <Error message={errors.lastName.message} />}
             </>
           )}
         />
@@ -86,26 +127,14 @@ const SignupForm = () => {
           )}
         />
 
-        <Controller
-          control={control}
-          name="phonenumber"
-          render={({field: {onChange, value}}) => (
-            <>
-              <CustomTextInput
-                placeholder="Phone Number"
-                onChangeText={onChange}
-                value={value}
-                keyboardType="number-pad"
-              />
-              {errors.phonenumber && (
-                <Error message={errors.phonenumber.message} />
-              )}
-            </>
-          )}
-        />
+        {/* TODO: Add UI + logic to pick photo and set photo field */}
 
         <View>
-          <CustomPress onPress={handleSubmit(onSubmit)} text="Sign Up" />
+          <CustomPress
+            onPress={handleSubmit(onSubmit)}
+            text={isPending ? 'Loading...' : 'Sign Up'}
+            disabled={isPending}
+          />
         </View>
       </View>
     </KeyboardAvoidingView>

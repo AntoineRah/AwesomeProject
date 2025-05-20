@@ -15,7 +15,7 @@ const HomeTabs = () => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.background,
-          elevation: 10,
+          elevation: 0,
         },
       }}>
       <Tab.Screen

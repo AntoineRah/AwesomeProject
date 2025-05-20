@@ -9,11 +9,16 @@ import {Error} from '../../atoms/Error';
 import {CustomPress} from '../../atoms/CustomPress';
 import {useAuth} from '../../../hooks/authentication';
 import {useTheme} from '../../../hooks/theme';
+import {verifyOtp} from '../../../api/auth';
+import {useRoute} from '@react-navigation/native';
+import {useMutation} from '@tanstack/react-query';
 
 const VerificationForm = () => {
   const {login} = useAuth();
   const {colors} = useTheme();
   const styles = getstyles(colors);
+  const route = useRoute();
+  const {email} = route.params as {email: string};
 
   const {
     control,
@@ -23,12 +28,19 @@ const VerificationForm = () => {
     resolver: zodResolver(schema),
     defaultValues: {otp: ''},
   });
-  const onSubmit = (data: VerificationFormData) => {
-    if (data.otp === '1234') {
+
+  const {mutate, isPending} = useMutation({
+    mutationFn: (data: VerificationFormData) => verifyOtp(email, data.otp),
+    onSuccess: () => {
       login();
-    } else {
-      Alert.alert('Error', 'Incorrect OTP');
-    }
+    },
+    onError: (err: any) => {
+      Alert.alert('Error', err?.response?.data?.message || 'Incorrect OTP');
+    },
+  });
+
+  const onSubmit = (data: VerificationFormData) => {
+    mutate(data);
   };
 
   return (
@@ -43,7 +55,7 @@ const VerificationForm = () => {
             <TextInput
               style={styles.input}
               keyboardType="number-pad"
-              maxLength={4}
+              maxLength={6}
               onChangeText={onChange}
               value={value}
             />
@@ -52,7 +64,11 @@ const VerificationForm = () => {
         )}
       />
 
-      <CustomPress onPress={handleSubmit(onSubmit)} text="Verify" />
+      <CustomPress
+        onPress={handleSubmit(onSubmit)}
+        text={isPending ? 'Verifying...' : 'Verify'}
+        disabled={isPending}
+      />
     </View>
   );
 };

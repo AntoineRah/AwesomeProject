@@ -45,7 +45,7 @@ const getstyles = (colors: {
     },
     toggleThemeText: {
       marginTop: scale(12),
-      color: colors.firstcolor,
+      color: colors.textcolor,
       fontSize: scale(16),
       fontWeight: '600',
     },

@@ -3,8 +3,7 @@ import {z} from 'zod';
 const schema = z.object({
   otp: z
     .string()
-    .length(4, 'opt must be 4 digits')
-    .regex(/^\d{4}$/, 'Only digits allowed'),
+    .length(6, 'opt must be 4 digits'),
 });
 
 type VerificationFormData = z.infer<typeof schema>;

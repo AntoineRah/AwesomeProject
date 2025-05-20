@@ -5,6 +5,7 @@ import {
   Pressable,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -17,17 +18,18 @@ import {useNavigation} from '@react-navigation/native';
 import {LoginScreenNavigationProp} from './LoginForm.type';
 import {fonts} from '../../../globalSyles/fontTheme';
 import {useTheme} from '../../../hooks/theme';
+import {useMutation} from '@tanstack/react-query';
+import {login} from '../../../api/auth';
 
 const LoginForm = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
-  const [error, setError] = useState<string | undefined>();
   const [showPassword, setShowPassword] = useState(false);
   const {colors} = useTheme();
   const styles = getstyles(colors);
+
   const {
     control,
     handleSubmit,
-    reset,
     formState: {errors},
   } = useForm<LogInFormData>({
     resolver: zodResolver(schema),
@@ -37,14 +39,21 @@ const LoginForm = () => {
     },
   });
 
+  const {mutate, isPending} = useMutation({
+    mutationFn: ({email, password}: LogInFormData) => login(email, password),
+    onSuccess: (_data, variables) => {
+      navigation.navigate('OTP', {email: variables.email});
+    },
+    onError: (error: any) => {
+      Alert.alert(
+        'Login Failed',
+        error?.response?.data?.message || 'Invalid credentials',
+      );
+    },
+  });
+
   const onSubmit = (data: LogInFormData) => {
-    if (data.email === 'academy@gmail.com' && data.password === 'academy2025') {
-      navigation.navigate('OTP');
-      reset();
-      setError(undefined);
-    } else {
-      setError('invalid credentials');
-    }
+    mutate(data);
   };
 
   return (
@@ -84,19 +93,20 @@ const LoginForm = () => {
               secureTextEntry={!showPassword}
             />
             <Pressable onPress={() => setShowPassword(prev => !prev)}>
-              <View>
-                <Text style={[styles.showpassword, fonts.small]}>
-                  {showPassword ? 'Hide Password' : 'Show Password'}
-                </Text>
-              </View>
+              <Text style={[styles.showpassword, fonts.small]}>
+                {showPassword ? 'Hide Password' : 'Show Password'}
+              </Text>
             </Pressable>
             {errors.password && <Error message={errors.password.message} />}
           </View>
         )}
       />
-      {error && <Error message={error} />}
 
-      <CustomPress onPress={handleSubmit(onSubmit)} text="Log In" />
+      <CustomPress
+        onPress={handleSubmit(onSubmit)}
+        text={isPending ? 'Logging in...' : 'Log In'}
+        disabled={isPending}
+      />
 
       <Pressable onPress={() => navigation.navigate('Signup')}>
         <Text style={[styles.link, fonts.small]}>

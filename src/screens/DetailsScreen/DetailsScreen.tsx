@@ -1,4 +1,10 @@
-import {Text, Image, ScrollView, View} from 'react-native';
+import {
+  Text,
+  Image,
+  ScrollView,
+  View,
+  FlatList,
+} from 'react-native';
 import React from 'react';
 import {DetailsScreenProp} from './DetailsScreen.type';
 import {useRoute} from '@react-navigation/native';
@@ -13,21 +19,34 @@ const DetailsScreen = () => {
   const {colors} = useTheme();
   const styles = getstyles(colors);
 
+  const renderImage = ({item}: {item: {url: string}}) => (
+    <Image source={{uri: item.url}} style={styles.image} resizeMode="cover" />
+  );
+
   return product ? (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Image
-        resizeMode="contain"
-        source={{uri: product.images[0].url}}
-        style={styles.image}
+    <ScrollView style={styles.layer}>
+      <FlatList
+        contentContainerStyle={styles.container}
+        data={product.images}
+        keyExtractor={(_, index) => index.toString()}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        renderItem={renderImage}
+        style={styles.carousel}
       />
+
       <Text style={styles.title}>{product.title}</Text>
+
       <Text style={styles.description}>{product.description}</Text>
 
-      <View style={styles.buttonContainer}>
-        <Text style={styles.buttonText}>Share</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Text style={styles.buttonText}>Add to Cart</Text>
+      <View style={styles.buttonRow}>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Share</Text>
+        </View>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Add to Cart</Text>
+        </View>
       </View>
     </ScrollView>
   ) : (

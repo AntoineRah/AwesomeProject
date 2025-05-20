@@ -11,8 +11,8 @@ const getstyles = (colors: {
   StyleSheet.create({
     container: {
       flexDirection: 'row',
-      borderRadius: scale(30),
-      backgroundColor: colors.thirdcolor,
+      borderRadius: scale(10),
+      backgroundColor: colors.secondcolor,
       padding: scale(5),
       gap: scale(50),
       borderWidth: scale(2),
@@ -21,7 +21,7 @@ const getstyles = (colors: {
     imagestyle: {
       width: scale(100),
       height: scale(100),
-      borderRadius: scale(30),
+      borderRadius: scale(20),
     },
     fontstyle: {
       fontSize: scale(16),

@@ -19,7 +19,7 @@ const getstyles = (colors: {
       marginBottom: scale(16),
       textAlign: 'center',
       fontWeight: 'bold',
-      color:colors.textcolor,
+      color: colors.textcolor,
     },
     label: {
       marginTop: scale(12),
