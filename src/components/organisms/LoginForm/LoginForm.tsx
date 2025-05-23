@@ -20,8 +20,10 @@ import {fonts} from '../../../globalSyles/fontTheme';
 import {useTheme} from '../../../hooks/theme';
 import {useMutation} from '@tanstack/react-query';
 import {login} from '../../../api/auth';
+import {useAuthStore} from '../../../hooks/authentication/AuthStore';
 
 const LoginForm = () => {
+  const {setTokens} = useAuthStore();
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const [showPassword, setShowPassword] = useState(false);
   const {colors} = useTheme();
@@ -40,15 +42,23 @@ const LoginForm = () => {
   });
 
   const {mutate, isPending} = useMutation({
-    mutationFn: ({email, password}: LogInFormData) => login(email, password),
-    onSuccess: (_data, variables) => {
-      navigation.navigate('OTP', {email: variables.email});
+    mutationFn: ({email, password}: LogInFormData) =>
+      login(email, password, '1y'),
+    onSuccess: data => {
+      if (data.success) {
+        const {accessToken, refreshToken} = data.data;
+        setTokens(accessToken, refreshToken, '1y');
+      } else {
+        Alert.alert('Login Failed', 'Unexpected error');
+      }
     },
+
     onError: (error: any) => {
-      Alert.alert(
-        'Login Failed',
-        error?.response?.data?.message || 'Invalid credentials',
-      );
+      console.log(error);
+      // Alert.alert(
+      //   'Login Failed',
+      //   error,
+      // );
     },
   });
 

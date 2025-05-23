@@ -40,6 +40,11 @@ const getstyles = (
       color: colors.textcolor,
       marginTop: scale(9),
     },
+    sortbutton:{
+      color: colors.textcolor,
+      fontSize: scale(16),
+      fontWeight: 'bold',
+    }
   });
 
 export {getstyles};

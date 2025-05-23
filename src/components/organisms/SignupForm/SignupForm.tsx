@@ -23,7 +23,7 @@ const SignupForm = () => {
   const {
     control,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm<SignupFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -35,16 +35,14 @@ const SignupForm = () => {
     },
   });
 
-  console.log(`is it valid? ${isValid}`);
-
   const {mutate, isPending} = useMutation({
     mutationFn: (data: SignupFormData) => {
       const response = signup(data);
       console.log(response);
       return response;
     },
-    onSuccess: (_, variables) => {
-      navigate('OTP',{email:variables.email});
+    onSuccess: (_data, variables) => {
+      navigate('OTP', {email: variables.email, password: variables.password});
     },
     onError: (error: any) => {
       Alert.alert('Error', error?.message || 'Something went wrong');

@@ -1,28 +1,35 @@
-import {createContext, useContext, useState} from 'react';
-import {AuthProviderProps, AuthStoreType} from './AuthStore.type';
+import {AuthState} from './AuthStore.type';
+import {create} from 'zustand';
+import {persist} from 'zustand/middleware';
+import {secureStorage} from '../../storage';
 
-const AuthStore = createContext<AuthStoreType | undefined>(undefined);
+import ms, {StringValue} from 'ms';
 
-const AuthProvider = ({children}: AuthProviderProps) => {
-  const [isAuth, setAuth] = useState(false);
-  const login = () => {
-    setAuth(true);
-  };
-  const logout = () => {
-    setAuth(false);
-  };
-  return (
-    <AuthStore.Provider value={{isAuth, login, logout}}>
-      {children}
-    </AuthStore.Provider>
-  );
-};
-
-const useAuth = () => {
-  const context = useContext(AuthStore);
-  if (!context) {
-    throw new Error('use auth must be used inside a provider');
-  }
-  return context;
-};
-export {AuthProvider, useAuth};
+export const useAuthStore = create<AuthState>()(
+  persist(
+    set => ({
+      accessToken: null,
+      refreshToken: null,
+      expiresAt: null,
+      hydrated: false,
+      setTokens: (accessToken, refreshToken, expiresIn) => {
+        const expiresAt = Date.now() + ms(expiresIn as StringValue);
+        set({accessToken, refreshToken, expiresAt});
+      },
+      clearTokens: () =>
+        set({
+          accessToken: null,
+          refreshToken: null,
+          expiresAt: null,
+        }),
+        setHydratedStorage: (isHydrated:boolean) => set({hydrated:isHydrated} ),
+    }),
+    {
+      name: 'auth-storage',
+      storage: secureStorage,
+      onRehydrateStorage: () => (state, _error) => {
+        state?.setHydratedStorage(true);
+      },
+    },
+  ),
+);

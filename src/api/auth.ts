@@ -1,9 +1,14 @@
 import {axiosInstance} from './axios';
 
-export const login = async (email: string, password: string) => {
+export const login = async (
+  email: string,
+  password: string,
+  expiresIn: string,
+) => {
   const response = await axiosInstance.post('/api/auth/login', {
     email,
     password,
+    expiresIn,
   });
   return response.data;
 };
@@ -47,4 +52,12 @@ export const verifyOtp = async (email: string, otp: string) => {
     otp,
   });
   return response.data;
+};
+
+export const getNewTokens = async (refreshToken: string, expiresIn: string) => {
+  const response = await axiosInstance.post('/api/auth/refresh-token', {
+    refreshToken,
+    expiresIn,
+  });
+  return response;
 };

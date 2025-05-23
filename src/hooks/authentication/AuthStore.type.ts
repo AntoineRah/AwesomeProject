@@ -1,13 +1,15 @@
-import {ReactNode} from 'react';
+interface AuthState {
+  accessToken: string | null;
+  refreshToken: string | null;
+  expiresAt: number | null;
+  hydrated: boolean;
+  setTokens: (
+    accessToken: string,
+    refreshToken: string,
+    expiresIn: string,
+  ) => void;
+  clearTokens: () => void;
+  setHydratedStorage: (isHydrated: boolean) => void;
+}
 
-type AuthStoreType = {
-  isAuth: boolean;
-  login: () => void;
-  logout: () => void;
-};
-
-type AuthProviderProps = {
-  children: ReactNode;
-};
-
-export type {AuthStoreType, AuthProviderProps};
+export type {AuthState};
