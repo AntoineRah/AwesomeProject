@@ -1,4 +1,7 @@
+import {MainStackParamList} from '../main/MainStack.type';
+
 export type HomeTabParamList = {
-  Main: undefined;
+  Main: MainStackParamList;
   Settings: undefined;
+  Cart: undefined;
 };

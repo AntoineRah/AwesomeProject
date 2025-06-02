@@ -8,6 +8,8 @@ import {
   Alert,
   PermissionsAndroid,
   Platform,
+  Pressable,
+  Share,
 } from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {useQuery} from '@tanstack/react-query';
@@ -21,10 +23,12 @@ import {getstyles} from './DetailsScreen.style';
 import {useTheme} from '../../hooks/theme';
 import {fetchProductDetails} from '../../api/products';
 import {SplashScreen} from '../SplashScreen';
+import {useCartStore} from '../../hooks/CartStore/cartstore';
 
 const DetailsScreen = () => {
   const {params} = useRoute<DetailsScreenProp>();
   const {colors} = useTheme();
+  const {add} = useCartStore();
   const {data, isError, isLoading, error} = useQuery({
     queryKey: ['productdetail', params.id],
     queryFn: () => fetchProductDetails(params.id),
@@ -128,12 +132,27 @@ const DetailsScreen = () => {
       <Text style={styles.description}>{product.description}</Text>
 
       <View style={styles.buttonRow}>
-        <View style={styles.button}>
+        <Pressable
+          style={styles.button}
+          onPress={() =>
+            Share.share({
+              message: `awesomeproject://details/${product._id}`,
+            })
+          }>
           <Text style={styles.buttonText}>Share</Text>
-        </View>
-        <View style={styles.button}>
+        </Pressable>
+        <Pressable
+          style={styles.button}
+          onPress={() =>
+            add({
+              id: product._id,
+              name: product.title,
+              price: product.price,
+              quantity: 1,
+            })
+          }>
           <Text style={styles.buttonText}>Add to Cart</Text>
-        </View>
+        </Pressable>
       </View>
 
       <Text>Contact seller at: {product.user.email}</Text>

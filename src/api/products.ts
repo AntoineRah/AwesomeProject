@@ -47,3 +47,8 @@ export const addProduct = async (
 
   return response.data;
 };
+
+export const fetchProductDetails = async (id: string) => {
+  const response = await axiosInstance.get(`/api/products/${id}`);
+  return response.data;
+};

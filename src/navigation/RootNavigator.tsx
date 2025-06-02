@@ -4,15 +4,20 @@ import {NavigationContainer} from '@react-navigation/native';
 import {useAuthStore} from '../hooks/authentication/AuthStore';
 import {HomeTabs} from './hometabs';
 import AuthStack from './auth/AuthStack';
+import {linking} from './linking';
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  Home:{screen: 'Main'};
+  Auth: undefined;
+};
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
   const accessToken = useAuthStore(state => state.accessToken);
   console.log(useAuthStore.getState());
 
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         {accessToken ? (
           <Stack.Screen name="Home" component={HomeTabs} />

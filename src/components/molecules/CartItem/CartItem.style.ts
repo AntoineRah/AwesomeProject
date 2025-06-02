@@ -18,11 +18,6 @@ const getstyles = (colors: {
       borderWidth: scale(2),
       borderColor: colors.secondcolor,
     },
-    imagestyle: {
-      width: scale(100),
-      height: scale(100),
-      borderRadius: scale(20),
-    },
     fontstyle: {
       fontSize: scale(16),
       fontWeight: 'bold',
@@ -35,7 +30,6 @@ const getstyles = (colors: {
     textcontainer: {
       justifyContent: 'center',
       alignSelf: 'center',
-      width: scale(100),
     },
   });
 

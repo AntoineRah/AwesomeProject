@@ -4,6 +4,7 @@ import {ThemeProvider} from './src/hooks/theme';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {useAuthStore} from './src/hooks/authentication';
 import {SplashScreen} from './src/screens/SplashScreen';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 //import {getNewTokens as refreshAccessToken} from './src/api/auth';
 const queryClient = new QueryClient();
 
@@ -43,9 +44,11 @@ const App = () => {
   }
   return (
     <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <RootNavigator />
-      </QueryClientProvider>
+      <GestureHandlerRootView>
+        <QueryClientProvider client={queryClient}>
+          <RootNavigator />
+        </QueryClientProvider>
+      </GestureHandlerRootView>
     </ThemeProvider>
   );
 };

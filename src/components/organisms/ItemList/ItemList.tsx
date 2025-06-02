@@ -11,6 +11,7 @@ import {SplashScreen} from '../../../screens/SplashScreen';
 import {useAuthStore} from '../../../hooks/authentication';
 import {useNavigation} from '@react-navigation/native';
 import {AddProductNavigationProp} from './ItemList.type';
+import {ItemCardSkeleton} from '../../molecules/ItemCard/ItemCardSkeleton';
 
 const ItemList = () => {
   const accessToken = useAuthStore(state => state.accessToken);
@@ -28,6 +29,7 @@ const ItemList = () => {
     isFetchingNextPage,
     isLoading,
     refetch,
+    isRefetching,
   } = useInfiniteQuery({
     queryKey: ['products'],
     queryFn: ({pageParam = 1}) =>
@@ -72,58 +74,65 @@ const ItemList = () => {
 
   const styles = getstyles(colors, insets.top);
   return (
-    <View>
-      <FlatList
-        contentInsetAdjustmentBehavior="never"
-        refreshing={refreshing}
-        onRefresh={refresh}
-        ListHeaderComponent={
-          <View style={styles.header}>
-            <Text style={styles.titlestyle}>Home Page</Text>
-            <CustomTextInput
-              style={styles.searchbar}
-              placeholder="Search..."
-              placeholderTextColor={colors.textcolor}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
+    <View style={{flex: 1}}>
+      <View style={styles.header}>
+        <Text style={styles.titlestyle}>Home Page</Text>
+        <CustomTextInput
+          style={styles.searchbar}
+          placeholder="Search..."
+          placeholderTextColor={colors.textcolor}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+        <TouchableOpacity
+          onPress={() => {
+            setSortOrder(prev =>
+              prev === 'asc' ? 'desc' : prev === 'desc' ? null : 'asc',
+            );
+          }}>
+          <Text style={styles.sortbutton}>
+            Sort By Price{' '}
+            {sortOrder === 'asc' ? '↑' : sortOrder === 'desc' ? '↓' : ''}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('AddProduct')}>
+          <Text>Add Product</Text>
+        </TouchableOpacity>
+      </View>
+
+      {isLoading || isRefetching ? (
+        <FlatList
+          data={Array.from({length: 8})}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={() => <ItemCardSkeleton />}
+          contentContainerStyle={{paddingHorizontal: 10}}
+        />
+      ) : (
+        <FlatList
+          contentInsetAdjustmentBehavior="never"
+          refreshing={refreshing}
+          onRefresh={refresh}
+          data={listData}
+          onEndReached={() => {
+            if (!searchQuery && hasNextPage) {
+              fetchNextPage();
+            }
+          }}
+          onEndReachedThreshold={0.1}
+          keyExtractor={item => item._id}
+          ListFooterComponent={isFetchingNextPage ? <SplashScreen /> : null}
+          renderItem={({item}) => (
+            <ItemCard
+              style={styles.container}
+              id={item._id}
+              title={item.title}
+              price={item.price}
+              imageUrl={item.images[0].url}
             />
-            <TouchableOpacity
-              onPress={() => {
-                setSortOrder(prev =>
-                  prev === 'asc' ? 'desc' : prev === 'desc' ? null : 'asc',
-                );
-              }}>
-              <Text style={styles.sortbutton}>
-                Sort By Price {''}
-                {sortOrder === 'asc' ? '↑' : sortOrder === 'desc' ? '↓' : ''}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('AddProduct')}>
-              <Text>Add Product</Text>
-            </TouchableOpacity>
-          </View>
-        }
-        data={listData}
-        onEndReached={() => {
-          if (!searchQuery && hasNextPage) {
-            fetchNextPage();
-          }
-        }}
-        onEndReachedThreshold={0.1}
-        keyExtractor={item => item._id}
-        ListFooterComponent={isFetchingNextPage ? <SplashScreen /> : null}
-        renderItem={({item}) => (
-          <ItemCard
-            style={styles.container}
-            id={item._id}
-            title={item.title}
-            price={item.price}
-            imageUrl={item.images[0].url}
-          />
-        )}
-      />
+          )}
+        />
+      )}
     </View>
   );
 };
-
 export default ItemList;

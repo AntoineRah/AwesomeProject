@@ -4,6 +4,7 @@ import {MainStack} from '../main';
 import {SettingsScreen} from '../../screens/SettingsScreen';
 import {HomeTabParamList} from './HomeTabs.type';
 import {useTheme} from '../../hooks/theme';
+import {Cart} from '../../components/organisms/Cart/Cart';
 
 const Tab = createBottomTabNavigator<HomeTabParamList>();
 
@@ -22,6 +23,11 @@ const HomeTabs = () => {
         name="Main"
         component={MainStack}
         options={{tabBarLabel: 'Main', tabBarIcon: () => null}}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={Cart}
+        options={{tabBarLabel: 'Cart', tabBarIcon: () => null}}
       />
       <Tab.Screen
         name="Settings"
