@@ -49,6 +49,23 @@ const ItemList = () => {
     enabled: searchQuery.trim().length > 0,
   });
 
+    const products = React.useMemo(()=>data?.pages.flatMap(page => page.data) ?? [],[data?.pages]);
+  const searchResults = React.useMemo(()=>searchData?.data ?? [],[searchData?.data]);
+  const listData = React.useMemo(() => {
+    const baseData = searchQuery ? searchResults : products;
+    if (sortOrder === 'asc')
+      return [...baseData].sort((a, b) => a.price - b.price);
+    if (sortOrder === 'desc')
+      return [...baseData].sort((a, b) => b.price - a.price);
+    return baseData;
+  }, [searchQuery, searchResults, products, sortOrder]);
+
+  const styles = React.useMemo(
+    () => getstyles(colors, insets.top),
+    [colors, insets],
+  );
+
+
   if (isLoading) {
     return <SplashScreen />;
   }
@@ -58,50 +75,38 @@ const ItemList = () => {
     setRefreshing(false);
   };
 
-  const products = data?.pages.flatMap(page => page.data) ?? [];
-  const searchResults = searchData?.data ?? [];
-  const sortedData = searchQuery ? searchResults : products;
-  if (sortOrder === 'asc') {
-    sortedData.sort(
-      (a: {price: number}, b: {price: number}) => a.price - b.price,
-    );
-  } else if (sortOrder === 'desc') {
-    sortedData.sort(
-      (a: {price: number}, b: {price: number}) => b.price - a.price,
-    );
-  }
-  const listData = sortedData;
+  const ListHeader = React.memo(() => (
+    <View style={styles.header}>
+      <Text style={styles.titlestyle}>Home Page</Text>
+      <CustomTextInput
+        style={styles.searchbar}
+        placeholder="Search..."
+        placeholderTextColor={colors.textcolor}
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+      />
+      <TouchableOpacity
+        onPress={() =>
+          setSortOrder(prev =>
+            prev === 'asc' ? 'desc' : prev === 'desc' ? null : 'asc',
+          )
+        }>
+        <Text style={styles.sortbutton}>
+          Sort By Price{' '}
+          {sortOrder === 'asc' ? '↑' : sortOrder === 'desc' ? '↓' : ''}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('AddProduct')}>
+        <Text>Add Product</Text>
+      </TouchableOpacity>
+    </View>
+  ));
 
-  const styles = getstyles(colors, insets.top);
   return (
     <View style={{flex: 1}}>
-      <View style={styles.header}>
-        <Text style={styles.titlestyle}>Home Page</Text>
-        <CustomTextInput
-          style={styles.searchbar}
-          placeholder="Search..."
-          placeholderTextColor={colors.textcolor}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
-        <TouchableOpacity
-          onPress={() => {
-            setSortOrder(prev =>
-              prev === 'asc' ? 'desc' : prev === 'desc' ? null : 'asc',
-            );
-          }}>
-          <Text style={styles.sortbutton}>
-            Sort By Price{' '}
-            {sortOrder === 'asc' ? '↑' : sortOrder === 'desc' ? '↓' : ''}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('AddProduct')}>
-          <Text>Add Product</Text>
-        </TouchableOpacity>
-      </View>
-
       {isLoading || isRefetching ? (
         <FlatList
+          ListHeaderComponent={<ListHeader />}
           data={Array.from({length: 8})}
           keyExtractor={(_, index) => index.toString()}
           renderItem={() => <ItemCardSkeleton />}
@@ -109,6 +114,7 @@ const ItemList = () => {
         />
       ) : (
         <FlatList
+          ListHeaderComponent={<ListHeader />}
           contentInsetAdjustmentBehavior="never"
           refreshing={refreshing}
           onRefresh={refresh}
@@ -135,4 +141,4 @@ const ItemList = () => {
     </View>
   );
 };
-export default ItemList;
+export {ItemList};

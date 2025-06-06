@@ -5,6 +5,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {useAuthStore} from './src/hooks/authentication';
 import {SplashScreen} from './src/screens/SplashScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { getCrashlytics, log, setUserId } from '@react-native-firebase/crashlytics';
 //import {getNewTokens as refreshAccessToken} from './src/api/auth';
 const queryClient = new QueryClient();
 
@@ -39,6 +40,11 @@ const queryClient = new QueryClient();
 // }
 const App = () => {
   const hydrated = useAuthStore(state => state.hydrated);
+  
+
+const crashlytics = getCrashlytics();
+log(crashlytics, 'App started');
+setUserId(crashlytics, '12345');
   if (!hydrated) {
     return <SplashScreen />;
   }

@@ -11,29 +11,35 @@ import {fonts} from '../../../globalSyles/fontTheme';
 import Config from 'react-native-config';
 import {useCartStore} from '../../../hooks/CartStore';
 
-const ItemCard = ({id, title, price, imageUrl, style}: ItemCardProps) => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<MainStackParamList, 'ItemList'>>();
-  const {colors} = useTheme();
-  const {add} = useCartStore();
-  const styles = getstyles(colors);
-  return (
-    <Pressable
-      style={[styles.container, style]}
-      onPress={() => navigation.navigate('Details', {id: id})}>
-      <Image
-        style={styles.imagestyle}
-        source={{uri: Config.BASE_URL + imageUrl}}
-      />
-      <View style={styles.textcontainer}>
-        <Text style={[styles.fontstyle, fonts.heading]}>{title}</Text>
-        <Text style={[styles.pricestyle, fonts.small]}>Price: {price}$</Text>
-      </View>
-      <Pressable onPress={() => add({id, name: title, price, quantity: 1})}>
-        <Text style={styles.fontstyle}>Add</Text>
-      </Pressable>
-    </Pressable>
-  );
-};
+const ItemCardComponent = React.memo(
+  ({id, title, price, imageUrl, style}: ItemCardProps) => {
+    const navigation =
+      useNavigation<
+        NativeStackNavigationProp<MainStackParamList, 'ItemList'>
+      >();
+    const {colors} = useTheme();
+    const {add} = useCartStore();
+    const styles = React.useMemo(() => getstyles(colors), [colors]);
 
-export {ItemCard};
+    return (
+      <Pressable
+        style={[styles.container, style]}
+        onPress={() => navigation.navigate('Details', {id})}>
+        <Image
+          style={styles.imagestyle}
+          source={{uri: Config.BASE_URL + imageUrl}}
+          testID="item-image"
+        />
+        <View style={styles.textcontainer}>
+          <Text style={[styles.fontstyle, fonts.heading]}>{title}</Text>
+          <Text style={[styles.pricestyle, fonts.small]}>Price: {price}$</Text>
+        </View>
+        <Pressable onPress={() => add({id, name: title, price, quantity: 1})}>
+          <Text style={styles.fontstyle}>Add</Text>
+        </Pressable>
+      </Pressable>
+    );
+  },
+);
+
+export const ItemCard = React.memo(ItemCardComponent);

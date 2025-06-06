@@ -19,6 +19,7 @@ import {getstyles} from './SettingsForm.style';
 import {useAuthStore} from '../../../hooks/authentication/AuthStore';
 import {useTheme} from '../../../hooks/theme';
 import {fonts} from '../../../globalSyles/fontTheme';
+import { crash, getCrashlytics } from '@react-native-firebase/crashlytics';
 
 const SettingsForm = () => {
   const {clearTokens} = useAuthStore();
@@ -82,6 +83,8 @@ const SettingsForm = () => {
     Alert.alert('Profile Updated', `Name: ${name}\nPhoto URI: ${photoUri}`);
   };
 
+ const crashlytics = getCrashlytics();
+ 
   return (
     <View style={styles.container}>
       <View style={styles.profileSection}>
@@ -102,6 +105,11 @@ const SettingsForm = () => {
         <Pressable onPress={toggle}>
           <Text style={[styles.toggleThemeText, fonts.regular]}>
             Toggle Theme
+          </Text>
+        </Pressable>
+        <Pressable onPress={()=>crash(crashlytics)}>
+          <Text style={[styles.toggleThemeText, fonts.regular]}>
+            crash
           </Text>
         </Pressable>
       </View>
