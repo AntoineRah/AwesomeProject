@@ -7,6 +7,8 @@ import AuthStack from './auth/AuthStack';
 import {linking} from './linking';
 import notifee, {AndroidImportance} from '@notifee/react-native';
 import {useNotificationListener} from '../hooks/notifnav/notifnav';
+import {OneSignal, LogLevel} from 'react-native-onesignal';
+import Config from 'react-native-config';
 
 export type RootStackParamList = {
   Home: {screen: 'Main'};
@@ -17,16 +19,19 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const RootNavigator = () => {
   const accessToken = useAuthStore(state => state.accessToken);
   useNotificationListener();
-  // console.log(useAuthStore.getState());
-  // useEffect(() => {
-  //   OneSignal.Debug.setLogLevel(LogLevel.Verbose);
-  //   OneSignal.initialize(Config.ONE_SIGNAL_ID as string);
-  //   OneSignal.Notifications.requestPermission(false);
-  //   OneSignal.login('testid');
-  // }, []);
-
-  // console.log(OneSignal.User.pushSubscription.getOptedInAsync());
-
+  console.log(useAuthStore.getState());
+  useEffect(() => {
+    const getPermission = async () => {
+      const permission = await OneSignal.Notifications.requestPermission(false);
+      return permission;
+    };
+    OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+    OneSignal.initialize(Config.ONE_SIGNAL_ID as string);
+    if (getPermission().valueOf()) {
+      OneSignal.setConsentGiven(true);
+      OneSignal.login('222');
+    }
+  }, []);
 
   useEffect(() => {
     async function createChannel() {

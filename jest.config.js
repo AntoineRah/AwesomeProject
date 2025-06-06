@@ -16,7 +16,13 @@ export default {
       '|react-native-linear-gradient' +
       '|react-native-image-picker' +
       '|react-native-swipe-list-view' +
+      '|react-native-reanimated' +
+      '|@react-native-firebase' +
       ')/)',
   ],
-  
+   testPathIgnorePatterns: [
+    '/node_modules/',
+    '/__tests__/App.test.tsx',           
+    'src/components/organisms/SettingsForm/',
+  ],
 };

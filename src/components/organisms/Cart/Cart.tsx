@@ -7,25 +7,53 @@ import {useCartStore} from '../../../hooks/CartStore';
 import {CustomPress} from '../../atoms/CustomPress';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
+import {useFocusEffect} from '@react-navigation/native';
+
 const Cart = () => {
   const {colors} = useTheme();
   const styles = React.useMemo(() => getstyles(colors), [colors]);
   const products = useCartStore(state => state.products);
   const {clear, remove} = useCartStore();
+
+  const translateY = useSharedValue(300);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      translateY.value = withTiming(0, {duration: 500});
+      return () => {
+        translateY.value = 50;
+      };
+    }, []),
+  );
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{translateY: translateY.value}],
+  }));
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
+    <Animated.View style={[styles.container, animatedStyle]}>
+      <SafeAreaView>
         <View style={styles.topBar}>
           <Text style={styles.title}>CART</Text>
           <CustomPress text="Clear" onPress={() => clear()} />
         </View>
+
         <SwipeListView
           data={products}
           keyExtractor={(_, index) => index.toString()}
-          rightOpenValue={-80}
-          stopRightSwipe={-80}
+          rightOpenValue={-120}
+          stopRightSwipe={-200}
           renderHiddenItem={item => (
-            <CustomPress text="Delete" onPress={() => remove(item.item.id)} />
+            <CustomPress
+              style={styles.deletebutton}
+              text="Delete"
+              onPress={() => remove(item.item.id)}
+            />
           )}
           renderItem={item => (
             <CartItem
@@ -37,8 +65,8 @@ const Cart = () => {
           )}
           contentContainerStyle={{paddingHorizontal: 10}}
         />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </Animated.View>
   );
 };
 

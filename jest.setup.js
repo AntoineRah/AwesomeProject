@@ -1,5 +1,6 @@
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import 'react-native-gesture-handler/jestSetup';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
@@ -33,5 +34,16 @@ jest.mock('@notifee/react-native', () => ({
 }));
 
 jest.mock('react-native-gesture-handler', () => ({
-    GestureHandlerRootView: jest.fn(({ children }) => children),
+  GestureHandlerRootView: jest.fn(({children}) => children),
 }));
+
+jest.mock('react-native-reanimated', () => {
+  const Reanimated = require('react-native-reanimated/mock');
+  Reanimated.default.call = () => {}; 
+  return Reanimated;
+});
+
+try {
+  jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
+} catch (e) {
+}

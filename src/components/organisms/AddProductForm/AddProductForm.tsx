@@ -21,6 +21,7 @@ import {getstyles} from './AddProductForm.style';
 import {addProduct} from '../../../api/products';
 import {useAuthStore} from '../../../hooks/authentication';
 import notifee, {AndroidImportance} from '@notifee/react-native';
+import {sendPush} from '../../../api/products';
 
 const AddProductForm = () => {
   const {colors} = useTheme();
@@ -47,7 +48,7 @@ const AddProductForm = () => {
     mutationFn: (data: AddProductFormData) =>
       addProduct(data, accessToken as string),
     onSuccess: async response => {
-      // sendPush(response.data.title, response.data._id);
+      console.log(sendPush(response.data.title, response.data._id));
       await displayNotification(response.data._id, response.data.title);
       Alert.alert('Success', 'Product added!');
     },

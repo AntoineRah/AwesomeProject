@@ -17,6 +17,9 @@ const getstyles = (colors: {
       gap: scale(50),
       borderWidth: scale(2),
       borderColor: colors.secondcolor,
+      justifyContent: 'space-between',
+      height:scale(50),
+      marginVertical:scale(5)
     },
     fontstyle: {
       fontSize: scale(16),
@@ -28,9 +31,24 @@ const getstyles = (colors: {
       color: colors.textcolor,
     },
     textcontainer: {
+      flex: 3,
       justifyContent: 'center',
       alignSelf: 'center',
     },
+    changequantity: {
+      flex:1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent:'space-between'
+    },
+    plusminus:{
+      width:scale(20),
+      height:scale(20),
+      justifyContent:'center',
+      alignItems:'center',
+      borderRadius:scale(5)
+    },
+
   });
 
 export {getstyles};

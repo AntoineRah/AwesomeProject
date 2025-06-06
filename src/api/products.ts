@@ -1,5 +1,7 @@
 import {AddProductFormData} from '../components/organisms/AddProductForm/AddProductForm.type';
 import {axiosInstance} from './axios';
+import axios from 'axios';
+import Config from 'react-native-config';
 
 const fetchProducts = async (accessToken: string, page = 1) => {
   const response = await axiosInstance.get(`/api/products?page=${page}`, {
@@ -81,38 +83,38 @@ const addProduct = async (data: AddProductFormData, accessToken: string) => {
 //   }
 // };
 
-// import axios from 'axios';
 
-// const sendPush = async (
-//   productName: string,
-//   productId: string
-// ) => {
-//   try {
-//     await axios.post(
-//       'https://onesignal.com/api/v1/notifications',
-//       {
-//         app_id: Config.ONE_SIGNAL_ID,
-//         included_segments: ['All'], // sends to all users
-//         headings: { en: 'New Product Added!' },
-//         contents: { en: `Check out: ${productName}` },
-//         data: {
-//           productId,
-//         },
-//         url: `awesomeproject://Details/${productId}`,
-//       },
-//       {
-//         headers: {
-//           Authorization: `Basic ${Config.ONE_SIGNAL_KEY}`,
-//           'Content-Type': 'application/json',
-//         },
-//       }
-//     );
 
-//     console.log('Notification sent to all users');
-//   } catch (error) {
-//     console.error('Error sending push:', error);
-//   }
-// };
+const sendPush = async (
+  productName: string,
+  productId: string
+) => {
+  try {
+    await axios.post(
+      'https://onesignal.com/api/v1/notifications',
+      {
+        app_id: Config.ONE_SIGNAL_ID,
+        included_segments: ['All'], 
+        headings: { en: 'New Product Added!' },
+        contents: { en: `Check out: ${productName}` },
+        data: {
+          productId,
+        },
+        url: `awesomeproject://details/${productId}`,
+      },
+      {
+        headers: {
+          Authorization: `Basic ${Config.ONE_SIGNAL_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    console.log('Notification sent to all users');
+  } catch (error) {
+    console.error('Error sending push:', error);
+  }
+};
 
 const fetchProductDetails = async (id: string) => {
   const response = await axiosInstance.get(`/api/products/${id}`);
@@ -124,4 +126,4 @@ const searchProducts = async (query: string) => {
   return response.data;
 };
 
-export {fetchProducts, addProduct, fetchProductDetails,searchProducts};
+export {fetchProducts, addProduct, fetchProductDetails,searchProducts,sendPush};

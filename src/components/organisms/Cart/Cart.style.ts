@@ -26,5 +26,12 @@ const getstyles = (colors: {
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
+    deletebutton: {
+      alignSelf: 'flex-end',
+      width: scale(120),
+      borderRadius: scale(10),
+      height: scale(50),
+      marginVertical: scale(5),
+    },
   });
 export {getstyles};

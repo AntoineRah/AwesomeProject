@@ -1,3 +1,17 @@
+// jest.mock('@react-native-firebase/app', () => ({}));
+// jest.mock('@react-native-firebase/crashlytics', () => ({
+//   crash: jest.fn(),
+//   getCrashlytics: jest.fn(() => ({
+//     log: jest.fn(),
+//     recordError: jest.fn(),
+//     crash: jest.fn(),
+//     sendUnsentReports: jest.fn(),
+//     setUserId: jest.fn(),
+//     setAttributes: jest.fn(),
+//     setAttribute: jest.fn(),
+//   })),
+// }));
+
 import React from 'react';
 import {render, fireEvent} from '@testing-library/react-native';
 import {ItemCard} from './ItemCard';
@@ -70,5 +84,3 @@ describe('ItemCard', () => {
     });
   });
 });
-
-

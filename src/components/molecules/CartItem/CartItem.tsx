@@ -16,13 +16,15 @@ const CartItem = ({id, name, price, quantity}: product) => {
         <Text style={[styles.fontstyle, fonts.heading]}>{name}</Text>
         <Text style={[styles.pricestyle, fonts.small]}>{price}$</Text>
       </View>
-      <Pressable onPress={() => increment(id)}>
-        <Text style={styles.fontstyle}>+</Text>
-      </Pressable>
-      <Text style={styles.fontstyle}>{quantity}</Text>
-      <Pressable onPress={() => decrement(id)}>
-        <Text style={styles.fontstyle}>-</Text>
-      </Pressable>
+      <View style={styles.changequantity}>
+        <Pressable style={styles.plusminus} onPress={() => increment(id)}>
+          <Text style={styles.fontstyle}>+</Text>
+        </Pressable>
+        <Text style={styles.fontstyle}>{quantity}</Text>
+        <Pressable style={styles.plusminus} onPress={() => decrement(id)}>
+          <Text style={styles.fontstyle}>-</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
