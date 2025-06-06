@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import ItemList from '../../components/organisms/ItemList/ItemList';
+import {ItemList} from '../../components/organisms/ItemList/ItemList';
 import {getstyles} from './ItemListScreen.style';
 import {useTheme} from '../../hooks/theme';
 

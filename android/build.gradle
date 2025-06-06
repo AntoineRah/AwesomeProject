@@ -15,7 +15,17 @@ buildscript {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        // AGP (Android Gradle Plugin) 8.1.4
+        classpath "com.android.tools.build:gradle:8.1.4"
+
+        // Google services Gradle plugin 4.4.2
+        classpath "com.google.gms:google-services:4.4.2"
+
+        // Firebase Crashlytics Gradle plugin 3.0.3 (the actual artifact version is 2.9.1, so usually use that)
+        classpath "com.google.firebase:firebase-crashlytics-gradle:2.9.1"
+
     }
+
 }
 
 apply plugin: "com.facebook.react.rootproject"

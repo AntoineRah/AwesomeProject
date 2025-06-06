@@ -38,9 +38,13 @@ local.properties
 # node.js
 #
 .env
+.env.staging
+.env.production
 node_modules/
 npm-debug.log
 yarn-error.log
+# Firebase config
+google-services.json
 
 # fastlane
 #

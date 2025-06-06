@@ -9,7 +9,7 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import {SafeAreaView} from 'react-native-safe-area-context';
 const Cart = () => {
   const {colors} = useTheme();
-  const styles = getstyles(colors);
+  const styles = React.useMemo(() => getstyles(colors), [colors]);
   const products = useCartStore(state => state.products);
   const {clear, remove} = useCartStore();
   return (

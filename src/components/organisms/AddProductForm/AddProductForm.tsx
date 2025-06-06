@@ -20,10 +20,11 @@ import {schema, AddProductFormData} from './AddProductForm.type';
 import {getstyles} from './AddProductForm.style';
 import {addProduct} from '../../../api/products';
 import {useAuthStore} from '../../../hooks/authentication';
+import notifee, {AndroidImportance} from '@notifee/react-native';
 
 const AddProductForm = () => {
   const {colors} = useTheme();
-  const styles = getstyles(colors);
+  const styles = React.useMemo(() => getstyles(colors), [colors]);
   const accessToken = useAuthStore(state => state.accessToken);
 
   const {
@@ -45,21 +46,27 @@ const AddProductForm = () => {
   const {mutate, isPending} = useMutation({
     mutationFn: (data: AddProductFormData) =>
       addProduct(data, accessToken as string),
-    onSuccess: () => {
+    onSuccess: async response => {
+      // sendPush(response.data.title, response.data._id);
+      await displayNotification(response.data._id, response.data.title);
       Alert.alert('Success', 'Product added!');
     },
+
     onError: (error: any) => {
       Alert.alert('Error', error?.message || 'Failed to add product');
       console.log(error);
     },
   });
 
-  const onSubmit = (data: AddProductFormData) => {
-    console.log('Form data:', data);
-    mutate(data);
-  };
+  const onSubmit = React.useCallback(
+    (data: AddProductFormData) => {
+      console.log('Form data:', data);
+      mutate(data);
+    },
+    [mutate],
+  );
 
-  const pickImage = async () => {
+  const pickImage = React.useCallback(async () => {
     const result = await launchImageLibrary({
       mediaType: 'photo',
       selectionLimit: 0,
@@ -73,9 +80,35 @@ const AddProductForm = () => {
       }));
       setValue('images', formattedImages, {shouldValidate: true});
     }
-  };
+  }, [setValue]);
 
   const selectedImages = watch('images');
+  const displayNotification = React.useCallback(
+    async (productId: string, productTitle: string) => {
+      await notifee.requestPermission();
+
+      const channelId = await notifee.createChannel({
+        id: 'default',
+        name: 'Default Channel',
+        importance: AndroidImportance.HIGH,
+      });
+
+      await notifee.displayNotification({
+        title: 'Product Added!',
+        body: `Your product "${productTitle}" was added successfully.`,
+        android: {
+          channelId,
+          pressAction: {
+            id: 'default',
+          },
+        },
+        data: {
+          url: `awesomeproject://details/${productId}`,
+        },
+      });
+    },
+    [],
+  );
 
   return (
     <KeyboardAvoidingView
